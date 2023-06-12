@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Avaliação Code Group
+	</title>
+	<link rel="shortcut icon" type="image/png" href="../../assets/images/logos/favicon.png" />
+	<link rel="stylesheet" th:href="@{/assets/css/styles.min.css}" />
+	<link rel="stylesheet" th:href="@{/assets/css/bootstrap-duallistbox.css}" />
+
+	<link rel="stylesheet" th:href="@{/assets/css/jquery-ui.css}">
+</head>
+
+<body>
+	<!--  Body Wrapper -->
+	<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+		data-sidebar-position="fixed" data-header-position="fixed">
+		<!-- Sidebar Start -->
+		<aside class="left-sidebar">
+			<!-- Sidebar scroll-->
+			<div>
+				<!-- Sidebar navigation-->
+				<nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+					<ul id="sidebarnav">
+						<li class="nav-small-cap">
+							<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+							<span class="hide-menu">Home</span>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="/" aria-expanded="false">
+								<span>
+									<i class="ti ti-layout-dashboard"></i>
+								</span>
+								<span class="hide-menu">WorkFlow</span>
+							</a>
+						</li>
+						<li class="nav-small-cap">
+							<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+							<span class="hide-menu">Cadastro</span>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="/projeto" aria-expanded="false">
+								<span>
+									<i class="ti ti-layout-dashboard"></i>
+								</span>
+								<span class="hide-menu">Projeto</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="http://localhost:8080/swagger-ui/index.html#/"  target="_blank" aria-expanded="false">
+								<span>
+									<i class="ti ti-layout-dashboard"></i>
+								</span>
+								<span class="hide-menu">Pessoa</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<!-- End Sidebar navigation -->
+			</div>
+			<!-- End Sidebar scroll-->
+		</aside>
+		<!--  Sidebar End -->
+		<!--  Main wrapper -->
+		<div class="body-wrapper">
+			<div class="container-fluid">
+				<div class="row" th:if="${message}" id="msgSucesso">
+					<div class="alert alert-success" role="alert" th:text="${message}">
+					</div>
+				</div>
+				<div class="row">
+					<div class="d-flex align-items-center gap-2">
+						<button type="button" id="btnNovo" class="btn btn-info">NOVO PROJETO</button>
+					</div>
+				</div>
+
+				<div class="row">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Status</th>
+								<th scope="col">Risco</th>
+								<th scope="col">Açao</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="lstProj : ${projetopaginacao.content}"
+								th:style="${projeto}!=null and ${lstProj.id}==${projeto.id} ? 'font-weight: bold;'">
+								<td th:text="${lstProj.id}" />
+								<td th:text="${lstProj.nome}" />
+								<td th:text="${lstProj.status}" />
+								<td th:text="${lstProj.risco}" />
+								<td>
+									<div class="row align-items-start">
+										<div class="col-1">
+											<span>
+												<a class="page-link"
+													th:href="@{/projeto/__${projetopaginacao.number}__/__${lstProj.id}__}"
+													alt="Alterar">
+													<i class="ti ti-slice nav-small-cap-icon fs-5"></i>
+												</a>
+											</span>
+										</div>
+										<div class="col-2"
+											th:if="${lstProj.status}!='INICIADO' and ${lstProj.status}!='EM_ANDAMENTO' and  ${lstProj.status}!='ENCERRADO' and  ${lstProj.status}!='CANCELADO'">
+											<span>
+												<a class="page-link"
+													th:href="|javascript:ProjetoController.cancelarProjeto(${lstProj.id})|"
+													alt="Deletar">
+													<i class="ti ti-trash nav-small-cap-icon fs-5"></i>
+												</a>
+											</span>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<nav aria-label="Page navigation example">
+						<ul class="pagination d-flex justify-content-center">
+							<li class="page-item" th:if="${projetopaginacao.hasPrevious()}">
+								<a class="page-link" href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<th:block th:each="i: ${#numbers.sequence(0, projetopaginacao.totalPages - 1)}">
+								<li th:if="${projetopaginacao.number == i}" class="page-item  active">
+									<a class="page-link" href="#">[[${i}+1]]</a>
+								</li>
+								<li th:unless="${projetopaginacao.number == i}" class="page-item "><a class="page-link"
+										th:href="@{/projeto(page=${i},size=${projetopaginacao.size})}">[[${i}+1]]</a>
+								</li>
+							</th:block>
+							<li class="page-item" th:if="${projetopaginacao.hasNext()}">
+								<a class="page-link" href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
+				<div class="row" id="formulario" style="display: none;">
+
+					<div class="container px-4">
+						<div class="row gx-10">
+							<div class="col">
+								<div class="p-3 border bg-light">
+									<h5 class="card-title fw-semibold mb-4">Projeto</h5>
+									<div class="card">
+										<div class="card-body">
+
+
+
+
+											<form class="row g-3 needs-validation" novalidate action="#"
+												th:action="@{/projeto}" th:object="${projeto}" method="post">
+												<div class="col-md-4">
+													<label for="Nome" class="form-label">Nome</label>
+													<input type="hidden" class="form-control" id="id" th:field="*{id}">
+													<input type="text" class="form-control" id="Nome" th:field="*{nome}"
+														required>
+													<div class="invalid-feedback">
+														Favor informar o nome do Projeto.
+													</div>
+												</div>
+												<div class="col-md-8">
+													<label for="descricao" class="form-label">Descrição</label>
+													<input type="text" class="form-control" id="descricao"
+														th:field="*{descricao}" required>
+													<div class="invalid-feedback">
+														Favor informar uma Descrição para o projeto
+													</div>
+												</div>
+												<div class="col-md-6">
+													<label for="status" class="form-label">Status</label>
+													<select class="form-select" id="status" required
+														th:field="*{status}">
+														<option value="EM_ANALISE">em análise</option>
+														<option value="ANALISE_REALIZADA">análise realizada
+														</option>
+														<option value="ANALISE_APROVADA">análise aprovada
+														</option>
+														<option value="INICIADO">iniciado</option>
+														<option value="PLANEJADO">planejado</option>
+														<option value="EM_ANDAMENTO">em andamento</option>
+														<option value="ENCERRADO">encerrado</option>
+														<option value="CANCELADO">cancelado</option>
+													</select>
+													<div class="invalid-feedback">
+														Favor informar um Status para o projeto
+													</div>
+												</div>
+
+												<div class="col-md-6">
+													<label for="risco" class="form-label">Risco</label>
+													<select class="form-select" id="risco" required th:field="*{risco}">
+														<option value="BAIXO">Baixo</option>
+														<option value="MEDIO">Médio</option>
+														<option value="ALTO">Alto</option>
+													</select>
+													<div class="invalid-feedback">
+														Favor informar o Risco do projeto
+													</div>
+												</div>
+
+
+												<div class="col-md-3">
+													<label for="orcamento" class="form-label">Orçamento</label>
+													<input type="text" class="form-control" id="orcamento"
+														th:field="*{orcamento}" required>
+													<div class="invalid-feedback">
+														Favor o Orçamento do Projeto
+													</div>
+												</div>
+
+												<div class="col-md-3">
+													<label for="dtPrevisao" class="form-label">Data Previsao</label>
+													<div class="col-md-6 input-group">
+														<input type="text" class="form-control" id="dtPrevisao" required
+															th:field="*{dtPrevisao}">
+														<span class="input-group-text" id="basic-addon2"> <i
+																class="ti ti-calendar nav-small-cap-icon fs-4"></i></span>
+													</div>
+													<div class="invalid-feedback">
+														Favor informar uma previsao
+													</div>
+												</div>
+													<div class="col-md-6">
+													<label for="risco" class="form-label">Gerente</label>
+													<select class="form-select" id="gerente" required th:field="*{idGerente}">
+														<option   value="">Selecione um Gerente</option>
+														<option th:each="funcionario : ${lstFuncionarios}"th:value="${funcionario.id}" th:text="${funcionario.nome}"></option>
+													</select>
+													
+													<div class="invalid-feedback">
+														Favor informar o Gerente do projeto
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<label for="dtPrevisao" class="form-label">Membros</label>
+													<select multiple="multiple" size="10" id="membros" >
+														<option th:each="funcionario : ${lstFuncionarios}"th:value="${funcionario.id}" th:text="${funcionario.nome}"></option>
+													</select>
+
+												</div>
+
+
+												<div class="col-12 d-flex justify-content-end">
+
+													<div class="p-2"><button class="btn btn-primary"
+															type="submit">Gravar</button></div>
+													<div class="p-2"><button class="btn btn-danger" type="reset"
+															id="btnCancelar">Cancelar</button></div>
+												</div>
+
+
+
+
+
+											</form>
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
+	<script src="../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="../../assets/js/sidebarmenu.js"></script>
+	<script src="../../assets/js/app.min.js"></script>
+	<script src="../../assets/libs/jquery/dist/jquery-ui.js"></script>
+	<script src="../../assets/libs/jquery/dist/jquery.mask.min.js"></script>
+	<script src="../../assets/libs/jquery/dist/jquery.bootstrap-duallistbox.js"></script>
+
+	<script src="../../controller/projeto/ProjetoController.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Avaliação Code Group
+	</title>
+	<link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+	<link rel="stylesheet" href="../assets/css/workflow.css" />
+	<link rel="stylesheet" href="../assets/css/styles.min.css" />
+
+</head>
+
+<body>
+	<!--  Body Wrapper -->
+	<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+		data-sidebar-position="fixed" data-header-position="fixed">
+		<!-- Sidebar Start -->
+		<aside class="left-sidebar">
+			<!-- Sidebar scroll-->
+			<div>
+				<!-- Sidebar navigation-->
+				<nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+					<ul id="sidebarnav">
+						<li class="nav-small-cap">
+							<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+							<span class="hide-menu">Home</span>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link active" href="./../" aria-expanded="false">
+								<span>
+									<i class="ti ti-layout-dashboard"></i>
+								</span>
+								<span class="hide-menu">WorkFlow</span>
+							</a>
+						</li>
+						<li class="nav-small-cap">
+							<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+							<span class="hide-menu">Cadastro</span>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="./projeto" aria-expanded="false">
+								<span>
+									<i class="ti ti-layout-dashboard"></i>
+								</span>
+								<span class="hide-menu">Projeto</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="http://localhost:8080/swagger-ui/index.html#/" target="_blank" aria-expanded="false">
+								<span>
+									<i class="ti ti-layout-dashboard"></i>
+								</span>
+								<span class="hide-menu">Pessoa</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<!-- End Sidebar navigation -->
+			</div>
+			<!-- End Sidebar scroll-->
+		</aside>
+		<!--  Sidebar End -->
+		<!--  Main wrapper -->
+		<div class="body-wrapper">
+			<div class="container-fluid">
+
+				<ul class="columns">
+					<li class="column em-analise-column">
+						<div class="column-header">
+							<h4>Em análise</h4>
+						</div>
+						<ul class="task-list" id="em_analise">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'EM_ANALISE'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+
+					<li class="column analise-realizada-column">
+						<div class="column-header">
+							<h4>Análise realizada</h4>
+						</div>
+						<ul class="task-list" id="analise_realizada">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'ANALISE_REALIZADA'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+
+					<li class="column analise-aprovada-column">
+						<div class="column-header">
+							<h4>Análise aprovada</h4>
+						</div>
+						<ul class="task-list" id="analise_aprovada">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'ANALISE_APROVADA'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+
+					<li class="column iniciado-column">
+						<div class="column-header">
+							<h4>Iniciado</h4>
+						</div>
+						<ul class="task-list" id="iniciado">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'INICIADO'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+
+					<li class="column planejado-column">
+						<div class="column-header">
+							<h4>Planejado</h4>
+						</div>
+						<ul class="task-list" id="planejado">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'PLANEJADO'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+
+
+					<li class="column em-andamento-column">
+						<div class="column-header">
+							<h4>Em andamento</h4>
+						</div>
+						<ul class="task-list" id="em_andamento">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'EM_ANDAMENTO'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+
+					<li class="column encerrado-column">
+						<div class="column-header">
+							<h4>Encerrado</h4>
+						</div>
+						<ul class="task-list" id="encerrado">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'ENCERRADO'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+
+					<li class="column cancelado-column">
+						<div class="column-header">
+							<h4>Cancelado</h4>
+						</div>
+						<ul class="task-list" id="cancelado">
+							<li class="task" th:each="projeto : ${dashboard}"  th:if="${projeto.status} == 'CANCELADO'">
+								<p>[[${projeto.nome}]] 	<input type="hidden" class="form-control" name="id" th:value="${projeto.id}">
+								</p>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+	<script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="../assets/js/sidebarmenu.js"></script>
+	<script src="../assets/js/app.min.js"></script>
+	<script src="../assets/js/dragula.min.js"></script>
+
+	<script src="../controller/workflow/workflow.js"></script>
+</body>
+
+</html>
